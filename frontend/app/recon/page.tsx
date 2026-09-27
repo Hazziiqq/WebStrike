@@ -1,29 +1,46 @@
 'use client'
 
 import { useState } from 'react'
-import axios from 'axios'
+import axios, { isAxiosError } from 'axios'
+import HttpAnalysisCard from '../components/HttpAnalysisCard'
+import EndpointDiscCard from '../components/EndpointDiscCard'
+import type { ReconResult } from '@shared/types/recon'
 
 const Page = () => {
   const [target, setTarget] = useState('')
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
+  const [result, setResult] = useState<ReconResult | null>(null)
 
   const startRecon = async () => {
     if (!target) return
 
     setLoading(true)
     setMessage('')
+    setResult(null)
 
     try {
-      const response = await axios.post('http://localhost:5000/api/recon', {
-        target,
-      })
-      setMessage(`Received: ${response.data.received}`)
-    } catch (error: any) {
-      if (error.response) {
-        setMessage(`Error ${error.response.status}: ${error.response.data.error || 'Request failed'}`)
+      const response = await axios.post(
+        'http://localhost:5000/api/recon',
+        {
+          target,
+        }
+      )
+
+      setResult(response.data)
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        if (error.response) {
+          setMessage(
+            `Error ${error.response.status}: ${
+              error.response.data.error || 'Request failed'
+            }`
+          )
+        } else {
+          setMessage('Could not reach the backend.')
+        }
       } else {
-        setMessage('Could not reach the backend.')
+        setMessage('Something went wrong.')
       }
     } finally {
       setLoading(false)
@@ -56,6 +73,7 @@ const Page = () => {
           </label>
 
           <div className='flex gap-2.5'>
+
             <input
               value={target}
               onChange={(e) => setTarget(e.target.value)}
@@ -65,6 +83,7 @@ const Page = () => {
               disabled={loading}
               className='flex-1 bg-white border border-[#D9DEE5] rounded-md px-4 py-3 text-sm text-[#111827] placeholder:text-[#98A2B3] outline-none focus:border-[#1D4ED8] focus:ring-[3px] focus:ring-[#1D4ED8]/12 transition-colors disabled:opacity-60'
             />
+
             <button
               onClick={startRecon}
               disabled={loading}
@@ -72,10 +91,11 @@ const Page = () => {
             >
               {loading ? 'Starting…' : 'Start Recon'}
             </button>
+
           </div>
 
           {message && (
-            <p className='text-[13px] text-[#667085] mt-3.5'>
+            <p className='text-[13px] text-[#DC2626] mt-3.5'>
               {message}
             </p>
           )}
@@ -83,6 +103,14 @@ const Page = () => {
           <p className='text-[13px] text-[#667085] mt-3.5'>
             Only submit targets you are authorized to assess.
           </p>
+
+          {result && (
+            <>
+              <HttpAnalysisCard result={result} />
+
+              <EndpointDiscCard endpoints={result.endpoints} />
+            </>
+          )}
 
         </div>
 
