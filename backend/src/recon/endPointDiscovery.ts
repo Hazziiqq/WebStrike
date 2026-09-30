@@ -1,10 +1,7 @@
 import * as cheerio from 'cheerio'
 import { Endpoint } from '@shared/types/recon'
 
-export const discoverEndpoints = (
-  html: string,
-  baseUrl: string
-): Endpoint[] => {
+export const discoverEndpoints = (html: string, baseUrl: string): Endpoint[] => {
   if (!html) return []
 
   const document = cheerio.load(html)

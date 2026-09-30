@@ -20,7 +20,13 @@ export const analyzeHttp = async (url: string): Promise<HttpAnalysisResult> => {
 
     const responseTimeMs = Date.now() - startTime
     const body = await response.text()
+    const headers: Record<string, string> = {}
 
+    response.headers.forEach((value, key) => {
+        headers[key] = value
+    })
+    
+    
     return {
       reachable: true,
       status: response.status,
@@ -29,6 +35,7 @@ export const analyzeHttp = async (url: string): Promise<HttpAnalysisResult> => {
       server: response.headers.get('server'),
       responseTimeMs,
       finalUrl: response.url,
+      headers,
       body,
     }
   } catch (error) {
@@ -42,6 +49,7 @@ export const analyzeHttp = async (url: string): Promise<HttpAnalysisResult> => {
       server: null,
       responseTimeMs,
       finalUrl: url,
+      headers:{},
       body: '',
       error: error instanceof Error ? error.message : 'Unknown error',
     }

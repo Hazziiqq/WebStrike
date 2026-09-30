@@ -46,6 +46,19 @@ const HttpAnalysisCard = ({ result }: HttpAnalysisCardProps) => {
               </dd>
             </div>
 
+             <div className='flex flex-col gap-2'>
+               <dt className='text-[#667085]'>Headers</dt>
+
+              <dd className='bg-[#F7F8FA] border border-[#E5E7EB] rounded-md p-3 font-mono text-[12px]'>
+              {Object.entries(result.headers).map(([key, value]) => (
+              <div key={key} className='flex gap-4'>
+              <span className='text-[#667085]'>{key}:</span>
+              <span className='text-[#111827] break-all'>  {value}</span>
+            </div>
+            ))}
+           </dd>
+          </div>
+
             <div className='flex justify-between gap-6'>
               <dt className='text-[#667085]'>Response Time</dt>
               <dd className='text-[#111827] font-mono text-[13px]'>

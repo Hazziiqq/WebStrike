@@ -7,6 +7,7 @@ export type HttpAnalysisResult = {
   responseTimeMs: number
   finalUrl: string
   body: string
+  headers: Record<string, string>
   error?: string
 }
 
@@ -19,4 +20,11 @@ export type Endpoint = {
 
 export type ReconResult = HttpAnalysisResult & {
   endpoints: Endpoint[]
+  technologies: Technology[]
+}
+
+export type Technology = {
+  name: string,
+  category: string,
+  confidence:  'high' | 'medium' | 'low',
 }
