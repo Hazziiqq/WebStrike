@@ -26,15 +26,19 @@ const EndpointDiscCard = ({ endpoints }: EndpointDiscCardProps) => {
       <ul className='divide-y divide-[#D9DEE5] max-h-[320px] overflow-y-auto'>
         {endpoints.map((ep) => (
           <li
-            key={ep.url}
-            className='flex items-center gap-3 px-5 py-3'
+            key={`${ep.method}-${ep.url}-${ep.source}`}
+            className='grid grid-cols-[60px_minmax(0,1fr)_60px] items-center gap-3 px-5 py-3'
           >
-            <span className='text-[10px] font-semibold tracking-wider text-[#667085] bg-[#F7F8FA] border border-[#D9DEE5] rounded px-1.5 py-0.5 flex-shrink-0'>
+            <span className='text-[10px] font-semibold tracking-wider text-[#667085] bg-[#F7F8FA] border border-[#D9DEE5] rounded px-1.5 py-0.5 text-center'>
               {ep.method}
             </span>
 
             <span className='text-sm font-mono text-[#111827] truncate'>
-              {new URL(ep.url).pathname + new URL(ep.url).search}
+              {ep.path}
+            </span>
+
+            <span className='text-[10px] font-semibold tracking-wider text-[#667085] uppercase text-right'>
+              {ep.source}
             </span>
           </li>
         ))}

@@ -50,18 +50,12 @@ export const discoverTechnologies = (
   }
 
   // WordPress detection
-  if (
-    body.includes('wp-content') ||
-    body.includes('wp-includes')
-  ) {
+  if (body.includes('wp-content') || body.includes('wp-includes')) {
     addTech('WordPress', 'CMS', 'high')
   }
 
   // React detection
-  if (
-    body.includes('__next_data__') ||
-    body.includes('_next/static')
-  ) {
+  if (body.includes('__next_data__') || body.includes('_next/static')) {
     addTech('Next.js', 'Framework', 'high')
     addTech('React', 'Library', 'medium')
   }

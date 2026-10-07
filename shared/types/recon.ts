@@ -14,17 +14,24 @@ export type HttpAnalysisResult = {
 export type Endpoint = {
   url: string
   path: string
-  method: 'GET'
-  source: 'link'
+  method: 'GET' | 'POST'
+  source: 'link' | 'form' | 'javascript'
 }
 
 export type ReconResult = HttpAnalysisResult & {
   endpoints: Endpoint[]
   technologies: Technology[]
+  securityHead: SecurityHeaders[]
 }
 
 export type Technology = {
   name: string,
   category: string,
   confidence:  'high' | 'medium' | 'low',
+}
+
+export type SecurityHeaders = {
+  name: string,
+  present: boolean,
+  value: string | null,
 }

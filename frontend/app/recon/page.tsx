@@ -6,6 +6,7 @@ import HttpAnalysisCard from '../components/HttpAnalysisCard'
 import EndpointDiscCard from '../components/EndpointDiscCard'
 import type { ReconResult } from '@shared/types/recon'
 import TechnologyCard from '../components/TechnologyCard'
+import SecurityHeaderCard from '../components/SecurityHeaderCard'
 
 const Page = () => {
   const [target, setTarget] = useState('')
@@ -108,10 +109,10 @@ const Page = () => {
           {result && (
             <div className=''>
               <HttpAnalysisCard result={result} />
-              
               <TechnologyCard technologies={result.technologies} />
-
               <EndpointDiscCard endpoints={result.endpoints} />
+              <SecurityHeaderCard securities={result.securityHead} />
+
           </div>
           )}
 
