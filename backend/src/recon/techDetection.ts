@@ -1,13 +1,18 @@
-import { HttpAnalysisResult, Technology } from '@shared/types/recon'
+import { HttpAnalysisResult, Technology,Endpoint } from '@shared/types/recon'
 
 export const discoverTechnologies = (
-  analysis: HttpAnalysisResult
+  analysis: HttpAnalysisResult,  endpoints: Endpoint[]
 ): Technology[] => {
 
     const technologies: Technology[] = []
 
     const headers = analysis.headers
     const body = analysis.body.toLowerCase()
+
+    const hasPhpEndpoints = endpoints.some((endpoint) => {
+  return endpoint.path.toLowerCase().includes('.php')
+  })
+   
 
     const addTech = (name: string, category:string, confidence: Technology['confidence']) => {
         technologies.push({
@@ -16,6 +21,10 @@ export const discoverTechnologies = (
             confidence,
 
         })
+    }
+
+    if(hasPhpEndpoints){
+      addTech('PHP', 'Language', 'medium')
     }
 
     const server = headers['server']
@@ -33,7 +42,17 @@ export const discoverTechnologies = (
     if (serverLower.includes('cloudflare')) {
       addTech('Cloudflare', 'CDN', 'high')
     }
+
+     if(serverLower.includes('microsoft-iis')){
+      addTech('IIS', 'Server', 'high')
+     }
+
+     if(serverLower.includes('litespeed')){
+      addTech('LiteSpeed', 'Server', 'high')
+     }
     }
+
+   
 
     const poweredBy = headers['x-powered-by']
 
@@ -46,6 +65,9 @@ export const discoverTechnologies = (
 
     if (poweredByLower.includes('php')) {
       addTech('PHP', 'Language', 'high')
+
+    } if (poweredByLower.includes('asp.net')) {
+      addTech('asp.net', 'Framework', 'high')
     }
   }
 
@@ -54,11 +76,23 @@ export const discoverTechnologies = (
     addTech('WordPress', 'CMS', 'high')
   }
 
-  // React detection
+  // nextjs detection
   if (body.includes('__next_data__') || body.includes('_next/static')) {
     addTech('Next.js', 'Framework', 'high')
-    addTech('React', 'Library', 'medium')
+    
   }
+  
+ if(body.includes('data-reactroot')){
+  addTech('React.js', 'Library', 'medium')
+ }
+
+  if(body.includes('data-v-app')){
+  addTech('Vue.js', 'Library', 'medium')
+ }
+ 
+  if(body.includes('/_astro/')){
+  addTech('Astro', 'Framework', 'medium')
+ }
 
   return technologies
 }

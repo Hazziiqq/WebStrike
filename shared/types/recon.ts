@@ -15,13 +15,15 @@ export type Endpoint = {
   url: string
   path: string
   method: 'GET' | 'POST'
-  source: 'link' | 'form' | 'javascript'
+  source: 'link' | 'form' | 'javascript' | 'robots'
 }
 
 export type ReconResult = HttpAnalysisResult & {
   endpoints: Endpoint[]
   technologies: Technology[]
   securityHead: SecurityHeaders[]
+  infoRobots: RobotsFinding[]
+  infoSitemap: SitemapFinding[]
 }
 
 export type Technology = {
@@ -34,4 +36,15 @@ export type SecurityHeaders = {
   name: string,
   present: boolean,
   value: string | null,
+}
+
+export type RobotsFinding = {
+  path: string,
+  directive: 'allow' | 'disallow'
+}
+
+export type SitemapFinding = {
+  url: string,
+  path: string,
+  source: 'sitemap'
 }

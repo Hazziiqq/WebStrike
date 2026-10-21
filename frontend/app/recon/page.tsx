@@ -7,6 +7,8 @@ import EndpointDiscCard from '../components/EndpointDiscCard'
 import type { ReconResult } from '@shared/types/recon'
 import TechnologyCard from '../components/TechnologyCard'
 import SecurityHeaderCard from '../components/SecurityHeaderCard'
+import RobotsAnalysisCard from '../components/RobotsAnalysisCard'
+import SitemapAnalysisCard from '../components/SitemapAnalysisCard'
 
 const Page = () => {
   const [target, setTarget] = useState('')
@@ -112,8 +114,9 @@ const Page = () => {
               <TechnologyCard technologies={result.technologies} />
               <EndpointDiscCard endpoints={result.endpoints} />
               <SecurityHeaderCard securities={result.securityHead} />
-
-          </div>
+              <RobotsAnalysisCard paths={result.infoRobots} />
+              <SitemapAnalysisCard findings={result.infoSitemap} />
+            </div>
           )}
 
         </div>

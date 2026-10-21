@@ -4,6 +4,9 @@ import { discoverEndpoints } from '../recon/endPointDiscovery'
 import { discoverTechnologies } from '../recon/techDetection'
 import { discoverJavaScriptEndpoints } from '../recon/javascriptDiscovery'
 import { analyzeSecurityHeaders } from '../recon/securityHeaderAnalysis'
+import { discoverRobots } from '../recon/robotsDiscovery'
+import { discoverSitemap } from '../recon/sitemapDiscovery'
+import { info } from 'node:console'
 
 export const startRecon = async (req: Request, res: Response) => {
   const { target } = req.body
@@ -14,28 +17,42 @@ export const startRecon = async (req: Request, res: Response) => {
 
   const analysis = await analyzeHttp(target)
 
-  const htmlEndpoints = analysis.reachable
-    ? discoverEndpoints(analysis.body, analysis.finalUrl)
-    : []
+  const htmlEndpoints = analysis.reachable ? discoverEndpoints(analysis.body, analysis.finalUrl) : []
 
-  const javascriptEndpoints = analysis.reachable
-    ? await discoverJavaScriptEndpoints(analysis.finalUrl)
-    : []
+  const javascriptEndpoints = analysis.reachable? await discoverJavaScriptEndpoints(analysis.finalUrl) : []
+  
+  const securityHead  = analysis.reachable ? analyzeSecurityHeaders(analysis.headers) : []
 
-  const endpoints = [
-    ...htmlEndpoints,
-    ...javascriptEndpoints,
+  const infoRobots = analysis.reachable? await discoverRobots(analysis.finalUrl) : []
+
+  const infoSitemap = analysis.reachable? await discoverSitemap(analysis.finalUrl): []
+
+  const allEndpoints = [
+  ...htmlEndpoints,
+  ...javascriptEndpoints,
   ]
 
-  const technologies = analysis.reachable
-    ? discoverTechnologies(analysis)
-    : []
-  const securityHead  = analysis.reachable ? analyzeSecurityHeaders(analysis.headers) : []
+  const seenUrls = new Set<string>()
+
+  const endpoints = allEndpoints.filter((endpoint) => {
+  const key = `${endpoint.method}:${endpoint.url}`
+
+  if (seenUrls.has(key)) {
+    return false
+  }
+
+  seenUrls.add(key)
+  return true
+})
+
+  const technologies = analysis.reachable ? discoverTechnologies(analysis,endpoints): []
 
   return res.json({
     ...analysis,
     endpoints,
     technologies,
     securityHead,
+    infoRobots,
+    infoSitemap,
   })
 }

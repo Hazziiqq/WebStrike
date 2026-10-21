@@ -1,10 +1,10 @@
 import { HttpAnalysisResult } from "@shared/types/recon"
 
-const TIMEOUT_MS = 10000
+const timeOut = 10000
 
 export const analyzeHttp = async (url: string): Promise<HttpAnalysisResult> => {
   const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS)
+  const timeoutId = setTimeout(() => controller.abort(), timeOut)
   const browserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
   const startTime = Date.now()
 

@@ -2,8 +2,7 @@ import { chromium } from 'playwright'
 import { Endpoint } from '@shared/types/recon'
 
 export const discoverJavaScriptEndpoints = async (
-  targetUrl: string
-): Promise<Endpoint[]> => {
+  targetUrl: string): Promise<Endpoint[]> => {
 
   const endpoints: Endpoint[] = []
   const seenUrls = new Set<string>()
