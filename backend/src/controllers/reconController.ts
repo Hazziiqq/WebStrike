@@ -6,7 +6,7 @@ import { discoverJavaScriptEndpoints } from '../recon/javascriptDiscovery'
 import { analyzeSecurityHeaders } from '../recon/securityHeaderAnalysis'
 import { discoverRobots } from '../recon/robotsDiscovery'
 import { discoverSitemap } from '../recon/sitemapDiscovery'
-import { info } from 'node:console'
+import { discoverDirectory } from '../recon/directoryDiscovery'
 
 export const startRecon = async (req: Request, res: Response) => {
   const { target } = req.body
@@ -25,7 +25,9 @@ export const startRecon = async (req: Request, res: Response) => {
 
   const infoRobots = analysis.reachable? await discoverRobots(analysis.finalUrl) : []
 
-  const infoSitemap = analysis.reachable? await discoverSitemap(analysis.finalUrl): []
+  const infoSitemap = analysis.reachable? await discoverSitemap(analysis.finalUrl) : []
+
+  const directoryFindings = analysis.reachable? await discoverDirectory(analysis.finalUrl) : []
 
   const allEndpoints = [
   ...htmlEndpoints,
@@ -54,5 +56,7 @@ export const startRecon = async (req: Request, res: Response) => {
     securityHead,
     infoRobots,
     infoSitemap,
+    directoryFindings,
+
   })
 }

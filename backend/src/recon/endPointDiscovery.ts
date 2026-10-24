@@ -4,11 +4,10 @@ import { Endpoint } from '@shared/types/recon'
 export const discoverEndpoints = (html: string, baseUrl: string): Endpoint[] => {
   if (!html) return []
 
+  let base: URL
   const document = cheerio.load(html)
   const seenUrls = new Set<string>()
   const endpoints: Endpoint[] = []
-
-  let base: URL
 
   try {
     base = new URL(baseUrl)

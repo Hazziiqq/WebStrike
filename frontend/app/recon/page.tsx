@@ -9,6 +9,7 @@ import TechnologyCard from '../components/TechnologyCard'
 import SecurityHeaderCard from '../components/SecurityHeaderCard'
 import RobotsAnalysisCard from '../components/RobotsAnalysisCard'
 import SitemapAnalysisCard from '../components/SitemapAnalysisCard'
+import DirectoryAnalysisCard from '../components/DirectoryAnalysisCard'
 
 const Page = () => {
   const [target, setTarget] = useState('')
@@ -116,6 +117,7 @@ const Page = () => {
               <SecurityHeaderCard securities={result.securityHead} />
               <RobotsAnalysisCard paths={result.infoRobots} />
               <SitemapAnalysisCard findings={result.infoSitemap} />
+              <DirectoryAnalysisCard findings={result.directoryFindings} />
             </div>
           )}
 

@@ -24,6 +24,7 @@ export type ReconResult = HttpAnalysisResult & {
   securityHead: SecurityHeaders[]
   infoRobots: RobotsFinding[]
   infoSitemap: SitemapFinding[]
+  directoryFindings: DirectoryFinding[];
 }
 
 export type Technology = {
@@ -47,4 +48,11 @@ export type SitemapFinding = {
   url: string,
   path: string,
   source: 'sitemap'
+}
+
+export type DirectoryFinding = {
+  url: string,
+  path: string,
+  status: number,
+  statusText: string
 }
