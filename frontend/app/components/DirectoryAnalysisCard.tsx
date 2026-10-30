@@ -41,6 +41,9 @@ export default function DirectoryAnalysisCard({
                                 <th className="px-3 py-3 font-medium">
                                     Response
                                 </th>
+                                <th className="px-3 py-3 font-medium">
+                                    Detection
+                                </th>
                             </tr>
                         </thead>
 
@@ -76,6 +79,18 @@ export default function DirectoryAnalysisCard({
 
                                     <td className="px-3 py-3 text-gray-600">
                                         {finding.statusText || "No status text"}
+                                    </td>
+
+                                    <td className="px-3 py-3">
+                                        {finding.possibleGenericResponse ? (
+                                            <span className="inline-flex rounded-md bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700">
+                                                Possible generic response
+                                            </span>
+                                        ) : (
+                                            <span className="inline-flex rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700">
+                                                Different response
+                                            </span>
+                                        )}
                                     </td>
                                 </tr>
                             ))}

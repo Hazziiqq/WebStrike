@@ -19,7 +19,7 @@ const Hero = () => {
           <div className='flex flex-col items-start'>
 
             <span className='text-xs font-semibold tracking-[0.2em] text-[#1D4ED8] mb-5'>
-              — OFFENSIVE WEB SECURITY
+              OFFENSIVE WEB SECURITY
             </span>
 
             <h1 className='text-3xl md:text-4xl lg:text-5xl font-extrabold leading-[1.12] tracking-tight text-[#111827] mb-6 max-w-[18ch]'>

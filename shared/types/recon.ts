@@ -51,8 +51,9 @@ export type SitemapFinding = {
 }
 
 export type DirectoryFinding = {
-  url: string,
-  path: string,
-  status: number,
-  statusText: string
-}
+    url: string;
+    path: string;
+    status: number;
+    statusText: string;
+    possibleGenericResponse: boolean;
+};
